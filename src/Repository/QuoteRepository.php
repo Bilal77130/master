@@ -36,4 +36,28 @@ class QuoteRepository implements Repository
             $this->date
         );
     }
+
+    public function calculatePlaceOrder($text,$PlaceOrderName,$PlaceOrderElement){
+
+        $text = str_replace($PlaceOrderName,$PlaceOrderElement,$text);
+
+        return $text;
+
+    }
+
+
+    /**
+     * exemple of a new placeorder
+     *
+     * @return dateFormat
+     */
+    public function getDateTime()
+    {
+    
+        return  $this->date;
+    }
+
+
+
 }
+

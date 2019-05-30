@@ -33,4 +33,18 @@ class DestinationRepository implements Repository
             $this->computerName
         );
     }
+
+    public function calculatePlaceOrder($text,$PlaceOrderName,$PlaceOrderElement){
+
+        $text = str_replace($PlaceOrderName,$PlaceOrderElement,$text);
+
+        return $text;
+
+    }
+
+    public function getCountryName(){
+        return $this->country;
+    }
+
 }
+

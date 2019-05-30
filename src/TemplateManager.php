@@ -24,9 +24,9 @@ class TemplateManager
         if ($quote)
         {       
             //init objects
-            $_quoteFromRepository = QuoteRepository::getInstance()->getById($quote->id);
-            $usefulObject = SiteRepository::getInstance()->getById($quote->siteId);
-            $destinationOfQuote = DestinationRepository::getInstance()->getById($quote->destinationId);
+            $_quoteFromRepository = QuoteRepositoryFactory::create();
+            $usefulObject = SiteRepositoryFactory::create();
+            $destinationOfQuote = DestinationRepositoryFactory::create();
 
 
             if(strpos($text, '[quote:destination_link]') !== false){
@@ -55,17 +55,12 @@ class TemplateManager
             }
 
 
-        $text = $this->calculatePlaceOrder($text,'[quote:destination_name]',$destinationOfQuote->countryName);
 
-        $text = $this->calculatePlaceOrder($text,'[quote:dateQuoted]',$_quoteFromRepository->dateQuoted->format('d-m-Y H:i:s'));
+        $text = $_quoteFromRepository->calculatePlaceOrder($text,'[quote:destination_name]',$destinationOfQuote->getCountryName());
+
+        $text = $_quoteFromRepository->calculatePlaceOrder($text,'[quote:dateQuoted]',$_quoteFromRepository->getDateTime()->format('d-m-Y H:i:s'));
 
         }
-
-
-        if (isset($destination))    
-            $text = $this->calculatePlaceOrder($text,'[quote:destination_link]', $usefulObject->url . '/' . $destination->countryName . '/quote/' . $_quoteFromRepository->id, $text);
-        else
-            $text = $this->calculatePlaceOrder($text,'[quote:destination_link]','',);
 
 
         /*
@@ -75,21 +70,13 @@ class TemplateManager
         $_user  = (isset($data['user'])  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
         if($_user) {
 
-           $text = $this->calculatePlaceOrder($text,'[user:first_name]',ucfirst(mb_strtolower($_user->firstname)));
+           $text = $_quoteFromRepository->calculatePlaceOrder($text,'[user:first_name]',ucfirst(mb_strtolower($_user->firstname)));
         }
 
 
         return $text;
     }
 
-
-    public function calculatePlaceOrder($text,$PlaceOrderName,$PlaceOrderElement){
-
-        $text = str_replace($PlaceOrderName,$PlaceOrderElement,$text);
-
-        return $text;
-
-    }
 
 
 }

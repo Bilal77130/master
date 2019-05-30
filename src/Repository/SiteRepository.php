@@ -26,4 +26,21 @@ class SiteRepository implements Repository
         // DO NOT MODIFY THIS METHOD
         return new Site($id, $this->url);
     }
+
+   /**
+     * @param string $text
+     * @param string $PlaceOrderName
+     * @return String
+     */
+
+    public function calculatePlaceOrder($text,$PlaceOrderName,$PlaceOrderElement){
+
+        $text = str_replace($PlaceOrderName,$PlaceOrderElement,$text);
+
+        return $text;
+
+    }
+
+
 }
+

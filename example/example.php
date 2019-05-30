@@ -2,6 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+require_once __DIR__ . '/../src/Factory/QuoteRepository.php';
+require_once __DIR__ . '/../src/Factory/DestinationRepository.php';
+require_once __DIR__ . '/../src/Factory/SiteRepository.php';
+
 require_once __DIR__ . '/../src/Entity/Destination.php';
 require_once __DIR__ . '/../src/Entity/Quote.php';
 require_once __DIR__ . '/../src/Entity/Site.php';
@@ -24,6 +28,8 @@ $template = new Template(
 Bonjour [user:first_name],
 
 Merci d'avoir contacté un agent local pour votre voyage [quote:destination_name].
+
+Voci le nouvel item [quote:dateQuoted]
 
 Bien cordialement,
 
