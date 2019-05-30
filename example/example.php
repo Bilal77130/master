@@ -29,7 +29,7 @@ Bonjour [user:first_name],
 
 Merci d'avoir contacté un agent local pour votre voyage [quote:destination_name].
 
-Voci le nouvel item [quote:dateQuoted]
+
 
 Bien cordialement,
 

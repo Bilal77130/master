@@ -41,9 +41,24 @@ class DestinationRepository implements Repository
         return $text;
 
     }
-
+    /**
+     *
+     *
+     * @return string
+     */
+   
     public function getCountryName(){
-        return $this->country;
+       return $this->country;
+    }
+
+ /**
+     *
+     *
+     * @return string
+     */
+   
+    public function getComputerName(){
+       return $this->computerName;
     }
 
 }

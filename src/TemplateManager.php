@@ -19,46 +19,22 @@ class TemplateManager
     {
         $APPLICATION_CONTEXT = ApplicationContext::getInstance();
 
-        $quote = (isset($data['quote']) and $data['quote'] instanceof Quote) ? $data['quote'] : null;
+        $oQuote = (isset($data['quote']) and $data['quote'] instanceof Quote) ? $data['quote'] : null;
 
-        if ($quote)
+        if ($oQuote)
         {       
-            //init objects
-            $_quoteFromRepository = QuoteRepositoryFactory::create();
-            $usefulObject = SiteRepositoryFactory::create();
-            $destinationOfQuote = DestinationRepositoryFactory::create();
-
+            $OQuoteFromRepository = QuoteRepository::getInstance()->getById($oQuote->id);
+            $usefulObject = SiteRepository::getInstance()->getById($oQuote->siteId);
+            $destinationOfQuote = DestinationRepository::getInstance()->getById($oQuote->destinationId);
 
             if(strpos($text, '[quote:destination_link]') !== false){
-                $destination = DestinationRepository::getInstance()->getById($quote->destinationId);
+                $destination = DestinationRepository::getInstance()->getById($oQuote->destinationId);       
             }
 
-            $containsSummaryHtml = strpos($text, '[quote:summary_html]');
-            $containsSummary     = strpos($text, '[quote:summary]');
-            
+            // var_dump($destinationOfQuote->countryName);die;
 
-            if ($containsSummaryHtml !== false || $containsSummary !== false) {
-                if ($containsSummaryHtml !== false) {
-                    $text = str_replace(
-                        '[quote:summary_html]',
-                        Quote::renderHtml($_quoteFromRepository),
-                        $text
-                    );
-                }
-                if ($containsSummary !== false) {
-                    $text = str_replace(
-                        '[quote:summary]',
-                        Quote::renderText($_quoteFromRepository),
-                        $text
-                    );
-                }
-            }
-
-
-
-        $text = $_quoteFromRepository->calculatePlaceOrder($text,'[quote:destination_name]',$destinationOfQuote->getCountryName());
-
-        $text = $_quoteFromRepository->calculatePlaceOrder($text,'[quote:dateQuoted]',$_quoteFromRepository->getDateTime()->format('d-m-Y H:i:s'));
+        $text = $this->calculatePlaceOrder($text,'[quote:destination_link]',$destinationOfQuote->computerName);
+        $text = $this->calculatePlaceOrder($text,'[quote:destination_name]',$destinationOfQuote->countryName);
 
         }
 
@@ -70,13 +46,25 @@ class TemplateManager
         $_user  = (isset($data['user'])  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
         if($_user) {
 
-           $text = $_quoteFromRepository->calculatePlaceOrder($text,'[user:first_name]',ucfirst(mb_strtolower($_user->firstname)));
+           $text = $this->calculatePlaceOrder($text,'[user:first_name]',ucfirst(mb_strtolower($_user->firstname)));
         }
 
 
         return $text;
     }
 
+  /**
+     * @param string $text
+     * @param string $PlaceOrderName
+     * @return String
+     */
 
+    public function calculatePlaceOrder($text,$PlaceOrderName,$PlaceOrderElement){
+
+        $text = str_replace($PlaceOrderName,$PlaceOrderElement,$text);
+
+        return $text;
+
+    }
 
 }

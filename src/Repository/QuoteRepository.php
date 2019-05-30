@@ -45,6 +45,16 @@ class QuoteRepository implements Repository
 
     }
 
+    /**
+     * 
+     *
+     * @return int
+     */
+    public function getDestinationId()
+    {
+    
+        return  $this->destinationId;
+    } 
 
     /**
      * exemple of a new placeorder
